@@ -18,12 +18,18 @@ void identify(char *name, int numOfArguments, char *arguments[], char* newHome) 
     }
     else if (numOfArguments==1)
     {
-      if(strcmp(arguments[0],"-")==0)
+      if(strcmp(arguments[0],"-")==0 )
       {
         char cwd[100000]="";
         getcwd(cwd,sizeof(cwd));
         printf("%s\n",cwd);
         return;
+      }
+      else if (strcmp(arguments[0],"~")==0 )
+      {
+        if(chdir(newHome) < 0)  perror("error:");
+        return;
+
       }
       if(chdir(arguments[0]) < 0)
         {
@@ -37,11 +43,16 @@ void identify(char *name, int numOfArguments, char *arguments[], char* newHome) 
 
   else if (strcmp(name, "echo") == 0) 
   {
-
+    for(int i=0;i<numOfArguments;i++) printf("%s",arguments[i]);
+    printf("\n");
   } 
 
   else if (strcmp(name, "pwd") == 0) 
   {
-
+    char cwd[100000]="";
+    getcwd(cwd,sizeof(cwd));
+    printf("%s\n",cwd);
+    return;
   }
+
 };

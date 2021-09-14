@@ -4,7 +4,7 @@
 
 
 void breakAndProcess(char *commandText, char *newHome) {
-  char *commands[1024];
+  char *commands[100];
 
   char *token = strtok(commandText, ";");
   commands[0] = token;
@@ -20,7 +20,7 @@ void breakAndProcess(char *commandText, char *newHome) {
 
   for (i = 0; i < numOfCommands; i++) {
     char *command = removeLeadingSpaces(commands[i]);
-    char *arguments[1024];
+    char *arguments[100];
 
     token = strtok(command, " ");
     char *commandName = token;

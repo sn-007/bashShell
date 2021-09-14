@@ -15,8 +15,8 @@
 
 char* directoryManipulation(char * newHome)
 {
-    char dirBuf[1024];
-    char *currentWorkingDirectory = getcwd(dirBuf,1024);
+    char dirBuf[100000];
+    char *currentWorkingDirectory = getcwd(dirBuf,100000);
     //printf("\ncwd is %s\n",currentWorkingDirectory);
 
     int cwdLength = strlen(currentWorkingDirectory);
@@ -54,9 +54,9 @@ char* directoryManipulation(char * newHome)
 
 void displayPrompt(char * newHome)
 {
-    char hostBuf[1024];
+    char hostBuf[100000];
     printf("<%s@", getenv("USER"));
-    gethostname(hostBuf, 1024);
+    gethostname(hostBuf, 100000);
     printf("%s", hostBuf);
     printf("%s", directoryManipulation(newHome));
     

@@ -2,6 +2,7 @@
 #include "prompt.h"
 #include "cleaningFunctions.h"
 #include "getCommand.h"
+#include <stdio.h>
 
 unsigned long int n;
 char * textInput;
@@ -18,6 +19,7 @@ int main()
     {
         displayPrompt(newHome);
         getline(&textInput, &n, stdin);
+        if(strcmp(textInput,"\n")==0 || textInput==NULL) continue;
         char* noSpaceTextInput =removeLeadingSpaces(textInput);
         noSpaceTextInput[strlen(noSpaceTextInput)-1] = '\0';
         breakAndProcess(noSpaceTextInput,newHome);
