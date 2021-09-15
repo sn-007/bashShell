@@ -2,7 +2,7 @@
 #include "standardHeaders.h"
 #include <stdio.h>
 
-//cd pwd and echo will be implemented here itself
+//cd pwd echo repeat will be implemented here itself
 void identify(char *name, int numOfArguments, char *arguments[], char* newHome) {
 
   if (strcmp(name, "cd") == 0) 
@@ -54,5 +54,23 @@ void identify(char *name, int numOfArguments, char *arguments[], char* newHome) 
     printf("%s\n",cwd);
     return;
   }
+  else if (strcmp(name, "repeat") == 0)
+  {
+    if(numOfArguments < 2 ) {printf("repeat expects atleast 2 arguments\n");return;}
+    
+    int numOfTimes = atoi(arguments[0]);
+    printf("%d\n",numOfTimes);
+    if(numOfTimes <= 0) {printf("enter a valid number for repetetion\n");return;}
+
+    char * newArguments[100];
+    for (int i=2;i<numOfArguments;i++)
+      newArguments[i-2] = arguments[i];
+    
+    for (int i =0;i<numOfTimes;i++)
+    {
+      identify(arguments[1], numOfArguments-2, newArguments, newHome);
+    }
+  }
+
 
 };
