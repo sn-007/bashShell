@@ -1,6 +1,9 @@
 #include "cleaningFunctions.h"
+#include "pinfo.h"
 #include "standardHeaders.h"
 #include <stdio.h>
+#include <unistd.h>
+
 
 //cd pwd echo repeat will be implemented here itself
 void identify(char *name, int numOfArguments, char *arguments[], char* newHome) {
@@ -70,6 +73,32 @@ void identify(char *name, int numOfArguments, char *arguments[], char* newHome) 
     {
       identify(arguments[1], numOfArguments-2, newArguments, newHome);
     }
+  }
+  else if (strcmp(name, "pinfo") == 0)
+  {
+    
+    
+    if(numOfArguments==0)
+    {
+      int tempid = getpid();
+      int tempLength = snprintf( NULL, 0, "%d", tempid );
+      char* pid = malloc( tempLength + 1 );
+      snprintf( pid, tempLength + 1, "%d", tempid );
+      //printf("%s\n",pid);      
+      processPinfo(pid,newHome);
+    }
+    else if (numOfArguments == 1)
+    {
+      char * pid = arguments[0];
+      processPinfo(pid,newHome);
+      return;
+    }
+    else
+    {
+      printf("Invalid Argument size\n");
+      return;
+    }
+
   }
 
 
