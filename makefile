@@ -1,2 +1,2 @@
 main:
-	gcc -g  main.c prompt.c cleaningFunctions.c getCommand.c identify.c pinfo.c
+	gcc -g  main.c prompt.c cleaningFunctions.c getCommand.c identify.c pinfo.c ls.c

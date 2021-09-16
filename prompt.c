@@ -13,54 +13,55 @@
 //     printf("\n in gethome localhome is %s",localHome);
 // }
 
-char* directoryManipulation(char * newHome)
+void directoryManipulation(char * newHome, char * ans)
 {
     char dirBuf[100000];
     char *currentWorkingDirectory = getcwd(dirBuf,100000);
-    //printf("\ncwd is %s\n",currentWorkingDirectory);
-
     int cwdLength = strlen(currentWorkingDirectory);
-    
-        
-    if(strlen(newHome) > cwdLength)
-    {
-        
-        char *ans = malloc((3+cwdLength)*sizeof(char));
-        ans[0]=':';ans[1]='~';
-        for(int i=0;i<cwdLength;i++)
-        {
-            ans[2+i]=currentWorkingDirectory[i];
-        }
-        ans[3+cwdLength-1] = '>';
-        return ans;
-    }
 
-    else if (strlen(newHome) < cwdLength)
+    int f=1; //flag for checking whether cwd is part of newhome
+    for(int i =0;i<strlen(newHome);i++)
     {
-     
-        char *ans = malloc((cwdLength-strlen(newHome)+1+2)*sizeof(char));
-        ans[0]=':';ans[1]='~';
-        for(int i=0;i<(cwdLength-strlen(newHome));i++)
-        {
-            ans[2+i]=currentWorkingDirectory[strlen(newHome)+i];
-        }
-        ans[(cwdLength-strlen(newHome)+1+2-1)] = '>';
-        return ans;
+        if(newHome[i]!=currentWorkingDirectory[i]){f=0;break;}
     }
-           
-    return ":~>" ;
- 
+   
+    if(f==0)
+    {
+        
+        for(int i=0; i < strlen(currentWorkingDirectory);i++ )
+        {
+            ans[i] = currentWorkingDirectory[i];
+        }
+        return ; 
+        
+        
+    }
+    
+    else if(f==1)
+    {
+        for(int i=strlen(newHome); i < strlen(currentWorkingDirectory);i++ )
+        {
+            ans[i-strlen(newHome)+1] = currentWorkingDirectory[i];
+        }
+        return; 
+
+    }
 }
 
 void displayPrompt(char * newHome)
 {
+    char ans[1000];
+    memset(ans, '\0', 1000);
+    ans[0]='~';
+
+    directoryManipulation(newHome,ans);
+
     char hostBuf[100000];
     printf("<%s@", getenv("USER"));
     gethostname(hostBuf, 100000);
-    printf("%s", hostBuf);
-    printf("%s", directoryManipulation(newHome));
-    
-    
+    printf("%s:", hostBuf);
+    printf("%s>", ans);
+
 
 }
 

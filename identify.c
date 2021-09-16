@@ -1,12 +1,12 @@
 #include "cleaningFunctions.h"
 #include "pinfo.h"
 #include "standardHeaders.h"
+#include "ls.h"
 #include <stdio.h>
-#include <unistd.h>
 
 
 //cd pwd echo repeat will be implemented here itself
-void identify(char *name, int numOfArguments, char *arguments[], char* newHome) {
+void identify(char *name, int numOfArguments, char **arguments, char* newHome) {
 
   if (strcmp(name, "cd") == 0) 
   {
@@ -36,6 +36,7 @@ void identify(char *name, int numOfArguments, char *arguments[], char* newHome) 
       }
       if(chdir(arguments[0]) < 0)
         {
+          printf("argument for cd is %s\n", arguments[0]);
           perror(arguments[0]);
         }
     }
@@ -48,6 +49,8 @@ void identify(char *name, int numOfArguments, char *arguments[], char* newHome) 
   {
     for(int i=0;i<numOfArguments;i++) printf("%s",arguments[i]);
     printf("\n");
+  
+  
   } 
 
   else if (strcmp(name, "pwd") == 0) 
@@ -57,6 +60,7 @@ void identify(char *name, int numOfArguments, char *arguments[], char* newHome) 
     printf("%s\n",cwd);
     return;
   }
+
   else if (strcmp(name, "repeat") == 0)
   {
     if(numOfArguments < 2 ) {printf("repeat expects atleast 2 arguments\n");return;}
@@ -74,6 +78,7 @@ void identify(char *name, int numOfArguments, char *arguments[], char* newHome) 
       identify(arguments[1], numOfArguments-2, newArguments, newHome);
     }
   }
+
   else if (strcmp(name, "pinfo") == 0)
   {
     
@@ -100,6 +105,34 @@ void identify(char *name, int numOfArguments, char *arguments[], char* newHome) 
     }
 
   }
+
+  else if (strcmp(name, "ls") == 0)
+  {
+    int lflag=0, aflag=0, laflag=0, folderCount=0;
+    char *folders[100];
+    for(int i =0; i < numOfArguments;i++)
+    {
+      if(strcmp(arguments[i], "-l")==0 && strlen(arguments[i])==2)
+      {
+        lflag=1;
+      }
+      else if(strcmp(arguments[i], "-a")==0 && strlen(arguments[i])==2)
+      {
+        aflag=1;
+      }
+      else if( ( (strcmp(arguments[i], "-la")==0) || (strcmp(arguments[i], "-al")==0) )  && strlen(arguments[i])==3)
+      {
+        laflag=1;
+      }
+
+      else folders[folderCount++] = arguments[i];
+    }
+     if(laflag==1){lflag=1;aflag=1;}
+    
+    processLs(folders,folderCount,lflag,aflag,newHome);
+    return;    
+  }
+  
 
 
 };

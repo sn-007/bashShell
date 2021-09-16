@@ -33,6 +33,15 @@ void breakAndProcess(char *commandText, char *newHome) {
         arguments[j++] = removeLeadingSpaces(token);
     }
     int numOfArguments = j;
+    // printf("command name is : %s", commandName);
+    // printf("arguments are:\n");
+    // for (int sr =0; sr < numOfArguments;sr++ )
+    // {
+      
+    //   printf("%s\n",arguments[sr]);
+    // }
     identify(commandName, numOfArguments, arguments,newHome);
+    
   }
+  return;
 }
