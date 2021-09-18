@@ -3,6 +3,7 @@
 #include "cleaningFunctions.h"
 #include "getCommand.h"
 #include <signal.h>
+#include <stdio.h>
 #include <sys/wait.h>
 #include "wait.h"
 #include "systemCommands.h"
@@ -14,32 +15,40 @@ long long int bgProcessCount=0;
 
 void handler()
 {
-    int status, index, flag =0;
+    int status,index;
     pid_t pid = wait(NULL); // contains pid of the process which sent the signal
-    waitpid(pid, &status, 0);
 
+    int  found = -1;
+
+    waitpid(pid, &status, 0);
+    
+
+       
     for(long long int i =0;i < bgProcessCount;i++)
     {
-        if(bgProcessIDS[i]==0)
-            continue;
-
-        if(bgProcessIDS[i]==pid)
+        //ids will be zero for allready tracked processes so emiting those.
+        if(bgProcessIDS[i]!=0)
         {
-            bgProcessIDS[i]=0;
-            index=i;
-            flag =1;
+            if(bgProcessIDS[i]==pid)
+            {
+                bgProcessIDS[i]=0;
+                //asigignin 0 because we dont want to see them again.
+                index=i;found =1;
+            }
         }
+            
+     
     }
-    if(flag!=0)
-    {
+    if(found!=-1)
+    {    
         if(WIFEXITED(status))
         {
             fprintf(stdout,"\n%s with pid %d exited normally with status %d\n",bgProcessnames[index],pid,WEXITSTATUS(status));
+            return;
         }
-        else
-        {
-            fprintf(stderr,"\n%s with pid %d doesnot exited normally\n",bgProcessnames[index],pid);
-        }
+
+       fprintf(stderr,"\n%s with pid %d doesnot exited normally\n",bgProcessnames[index],pid);
+
     }
     return;
 }
@@ -51,6 +60,8 @@ int main()
 {
     char newHome[100000]="";
     getcwd(newHome,sizeof(newHome));
+    //printf("%s",newHome);
+    
     
     
     
@@ -68,7 +79,7 @@ int main()
 
         if(strcmp(textInput,"\n")==0 || textInput==NULL) continue;
 
-        char* noSpaceTextInput =removeLeadingSpaces(textInput);
+        char* noSpaceTextInput =removeLeadingSpaces(textInput,newHome);
         noSpaceTextInput[strlen(noSpaceTextInput)-1] = '\0'; //removing enter key
         breakAndProcess(noSpaceTextInput,newHome);
     }

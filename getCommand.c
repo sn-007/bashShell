@@ -3,7 +3,7 @@
 #include "cleaningFunctions.h"
 
 
-void breakAndProcess(char *commandText, char *newHome, char * previousWD) {
+void breakAndProcess(char *commandText, char *newHome) {
   char *commands[100];
 
   char *token = strtok(commandText, ";");
@@ -19,7 +19,7 @@ void breakAndProcess(char *commandText, char *newHome, char * previousWD) {
   int numOfCommands = i;
 
   for (i = 0; i < numOfCommands; i++) {
-    char *command = removeLeadingSpaces(commands[i]);
+    char *command = removeLeadingSpaces(commands[i],newHome);
     char *arguments[100];
 
     token = strtok(command, " ");
@@ -30,16 +30,10 @@ void breakAndProcess(char *commandText, char *newHome, char * previousWD) {
     while (token != NULL) {
       token = strtok(NULL, " ");
       if (token != NULL)
-        arguments[j++] = removeLeadingSpaces(token);
+        arguments[j++] = removeLeadingSpaces(token,newHome);
     }
     int numOfArguments = j;
-    // printf("command name is : %s", commandName);
-    // printf("arguments are:\n");
-    // for (int sr =0; sr < numOfArguments;sr++ )
-    // {
-      
-    //   printf("%s\n",arguments[sr]);
-    // }
+   
     identify(commandName, numOfArguments, arguments,newHome);
     
   }

@@ -3,15 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
- 
-
-
-// void getHome()
-// {
-//     char homeBuf[1024];
-//     localHome = getcwd(homeBuf,1024);
-//     printf("\n in gethome localhome is %s",localHome);
-// }
 
 void directoryManipulation(char * newHome, char * ans)
 {
@@ -61,9 +52,8 @@ void displayPrompt(char * newHome)
 
     printf("<%s@", getenv("USER"));
     printf("%s:", hostBuf);
-    printf("%s>", ans);
+    printf("%s> ", ans);
     memset(hostBuf, '\0', 100000);
-
 
 }
 

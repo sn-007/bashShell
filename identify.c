@@ -7,10 +7,28 @@
 #include <stdlib.h>
 #include <string.h>
 
+char OLDPWD[1000]=""; 
 
+void assign(char * a, char* b)
+{
+  int len = strlen(a);
+  for(int i =0;i <1000;i++ )
+  {
+    b[i]='\0';
+  }
+  for(int i =0;i <len;i++ )
+  {
+    b[i]=a[i];
+  }
+  return;
+}
 
 //cd pwd echo repeat will be implemented here itself
 void identify(char *name, int numOfArguments, char **arguments, char* newHome) {
+  
+
+  char cwdBUF[1024];
+  char * cwd = getcwd(cwdBUF,1024);
 
   if (strcmp(name, "cd") == 0) 
   {
@@ -23,6 +41,8 @@ void identify(char *name, int numOfArguments, char **arguments, char* newHome) {
     else if(numOfArguments == 0)
     {
         if(chdir(newHome) < 0)  perror("error:");
+
+        else assign(cwd,OLDPWD);
         return;
     }
 
@@ -30,15 +50,27 @@ void identify(char *name, int numOfArguments, char **arguments, char* newHome) {
     {
       if(strcmp(arguments[0],"-")==0 )
       {
-        printf("not implemented\n");
-        
+        if(OLDPWD[0])
+        {
+          printf("%s\n",OLDPWD);
+          if(chdir(OLDPWD) < 0)  perror("error:");
+
+          else assign(cwd,OLDPWD);
+        }
+
+        else 
+        {
+          printf("cd : OLDPWD not set yet");
+        }
+
+        return;
       }
 
       else if (strcmp(arguments[0],"~")==0 )
       {
         if(chdir(newHome) < 0)  perror("error:");
+        else assign(cwd,OLDPWD);
         return;
-
       }
 
       else if  (chdir(arguments[0]) < 0)
@@ -46,11 +78,10 @@ void identify(char *name, int numOfArguments, char **arguments, char* newHome) {
         perror(arguments[0]);
       }
 
+      else assign(cwd,OLDPWD);
+
     }
-    
     return;
-
-
   } 
 
   else if (strcmp(name, "echo") == 0) 
