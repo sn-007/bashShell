@@ -3,7 +3,7 @@
 #include "cleaningFunctions.h"
 
 
-void breakAndProcess(char *commandText, char *newHome) {
+void breakAndProcess(char *commandText, char *newHome, char * previousWD) {
   char *commands[100];
 
   char *token = strtok(commandText, ";");

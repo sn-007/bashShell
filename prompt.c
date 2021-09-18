@@ -57,10 +57,12 @@ void displayPrompt(char * newHome)
     directoryManipulation(newHome,ans);
 
     char hostBuf[100000];
-    printf("<%s@", getenv("USER"));
     gethostname(hostBuf, 100000);
+
+    printf("<%s@", getenv("USER"));
     printf("%s:", hostBuf);
     printf("%s>", ans);
+    memset(hostBuf, '\0', 100000);
 
 
 }
