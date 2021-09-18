@@ -60,7 +60,7 @@ void identify(char *name, int numOfArguments, char **arguments, char* newHome) {
 
         else 
         {
-          printf("cd : OLDPWD not set yet");
+          printf("cd : OLDPWD not set yet\n");
         }
 
         return;
