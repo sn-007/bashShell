@@ -1,12 +1,13 @@
 #include "standardHeaders.h"
+#include "wait.h"
+#include <signal.h>
+#include <sys/wait.h>
 #include "prompt.h"
 #include "cleaningFunctions.h"
 #include "getCommand.h"
-#include <signal.h>
-#include <stdio.h>
-#include <sys/wait.h>
-#include "wait.h"
 #include "systemCommands.h"
+
+
 
 
 char * bgProcessnames[100005];
@@ -60,10 +61,10 @@ int main()
 {
     char newHome[100000]="";
     getcwd(newHome,sizeof(newHome));
-    //printf("%s",newHome);
-    
-    
-    
+    using_history();
+    stifle_history(20);
+    read_history(NULL);
+
     
     
     system("clear");
@@ -79,6 +80,10 @@ int main()
 
         if(strcmp(textInput,"\n")==0 || textInput==NULL) continue;
 
+        add_history(textInput);
+        write_history(NULL);
+        
+    
         char* noSpaceTextInput =removeLeadingSpaces(textInput,newHome);
         noSpaceTextInput[strlen(noSpaceTextInput)-1] = '\0'; //removing enter key
         breakAndProcess(noSpaceTextInput,newHome);

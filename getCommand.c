@@ -3,9 +3,11 @@
 #include "cleaningFunctions.h"
 
 
+
 void breakAndProcess(char *commandText, char *newHome) {
   char *commands[100];
-
+  
+  
   char *token = strtok(commandText, ";");
   commands[0] = token;
 
@@ -20,6 +22,8 @@ void breakAndProcess(char *commandText, char *newHome) {
 
   for (i = 0; i < numOfCommands; i++) {
     char *command = removeLeadingSpaces(commands[i],newHome);
+    //char *command = commands[i];
+
     char *arguments[100];
 
     token = strtok(command, " ");
@@ -30,11 +34,16 @@ void breakAndProcess(char *commandText, char *newHome) {
     while (token != NULL) {
       token = strtok(NULL, " ");
       if (token != NULL)
-        arguments[j++] = removeLeadingSpaces(token,newHome);
+          arguments[j++] = removeLeadingSpaces(token,newHome);
+          //arguments[j++] = token;
+
     }
     int numOfArguments = j;
    
     identify(commandName, numOfArguments, arguments,newHome);
+
+    
+    
     
   }
   return;

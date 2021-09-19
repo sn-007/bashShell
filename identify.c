@@ -3,11 +3,51 @@
 #include "pinfo.h"
 #include "ls.h"
 #include "systemCommands.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
 
 char OLDPWD[1000]=""; 
+int max(int a, int b)
+{
+    if (a <= b)
+        return b;
+    else
+        return a;
+}
+
+int min(int a, int b)
+{
+    if (a <= b)
+        return a;
+    else
+        return b;
+}
+
+void printHistory(char **arguments,int numOfArguments)
+{
+  register HIST_ENTRY **list;
+  register int i;
+  int l1 = history_length;
+  int l2;
+  if (numOfArguments == 0)
+    l2 = 10;
+  else if(numOfArguments==1)
+    l2 = atoi(arguments[0]);
+  else 
+  {
+    printf("INVALID ARGUMENTS");
+    return;
+  }
+   
+    list = history_list();
+    if (list)
+        for (i = max(l1 - l2, 0); i < (max(l1 - l2, 0) + min(l1, l2)); i++)
+            printf("%d: %s\n", i, list[i]->line);
+    else
+        printf("no history list\n");
+    return;
+
+
+}
 
 void assign(char * a, char* b)
 {
@@ -106,7 +146,7 @@ void identify(char *name, int numOfArguments, char **arguments, char* newHome) {
     if(numOfArguments < 2 ) {printf("repeat expects atleast 2 arguments\n");return;}
     
     int numOfTimes = atoi(arguments[0]);
-    printf("%d\n",numOfTimes);
+    //printf("%d\n",numOfTimes);
     if(numOfTimes <= 0) {printf("enter a valid number for repetetion\n");return;}
 
     char * newArguments[100];
@@ -151,7 +191,7 @@ void identify(char *name, int numOfArguments, char **arguments, char* newHome) {
   else if (strcmp(name, "ls") == 0)
   {
     int lflag=0, aflag=0, laflag=0, folderCount=0;
-    char *folders[100];
+    char *folders[numOfArguments+2];
     for(int i =0; i < numOfArguments;i++)
     {
       if(strcmp(arguments[i], "~")==0 && strlen(arguments[i])==1)
@@ -181,6 +221,13 @@ void identify(char *name, int numOfArguments, char **arguments, char* newHome) {
     processLs(folders,folderCount,lflag,aflag,newHome);
     return;    
   }
+
+  else if (strcmp(name, "history") == 0)
+  {
+    printHistory(arguments,numOfArguments);
+
+  }
+
   
   else
   {
